@@ -17,7 +17,7 @@ import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.*;
-//simon feb 25 - march 25 - April 17-20 2022
+
 public class GUI extends JFrame implements ActionListener {
 
     private static JPanel panel;
@@ -42,38 +42,38 @@ public class GUI extends JFrame implements ActionListener {
     static String answerChoosen;
 
 	public static void main(String[] args) {
-
+// saziimet laukumu no sakuma
+//izveidot frame
         panel = new JPanel();
         frame = new JFrame();
-        frame.setSize(220, 300);
+        frame.setSize(300, 300);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setTitle("GUI");
+        frame.setTitle("LINGO");
         frame.setLocationRelativeTo(null);
         frame.add(panel);
-
+//vaards
         panel.setLayout(null);
-        Title = new JLabel("Wordle: ");
-        Title.setBounds(10, 20, 80, 25);
+        Title = new JLabel("Ieraksti vārdu: ");
+        Title.setBounds(10, 20, 150, 25);
         panel.add(Title);
-
+//ieraksti vardu
         panel.setLayout(null);
-        stats = new JLabel("Type a five letter word");
+        stats = new JLabel(" ");
         stats.setBounds(10, 50, 180, 25);
         panel.add(stats);
-
+// texta field
         userText1 = new JTextField();
         userText1.addActionListener(new GUI());
         userText1.setBounds(40, 80 + (0 * 25), 80, 25);
         panel.add(userText1);
-
+//poga enter
         JButton button = new JButton("Enter");
-        button.setBounds(100, 20, 80, 25);
+        button.setBounds(200, 20, 80, 25);
         button.addActionListener(new GUI());
         panel.add(button);
 
-        //JLabel winScreen = new JLabel("Good Luck Have Fun Mate!");
-        //winScreen.setBounds(10, 50, 350, 25);
-
+        
+// uzziimee tukshas vietas
         labels = new JLabel[6];
         for (int i = 0; i < 6; i++) {
             labels[i] = new JLabel("<html><font size='5' color=blue> ----- </font> <font");
@@ -83,14 +83,14 @@ public class GUI extends JFrame implements ActionListener {
 
         frame.setVisible(true);
 
-        StartWordle(); //gets the answer word, and does some other thing like starting the timer
+        StartWordle(); //sakt speeli
     }
 
     public static void StartWordle() {
-        //makes an array of the possible words (12947 lines long)
+        //izveido masivu ar iespejamajiem vardiem, kurus var ierakstit
         possibleWords = new String[12947];
-        try { //copied from https://replit.com/@skutschke/WordleWords#Main.java
-            File myObj = new File("C:\\Users\\Janis\\Desktop\\Minecraft JAVA\\Javaprojekts12m\\src\\wordleWords.txt");
+        try { 
+            File myObj = new File("src\\wordleWords.txt");
             Scanner myReader = new Scanner(myObj);
             int indexCounter = 0;
             while (myReader.hasNextLine()) {
@@ -104,26 +104,28 @@ public class GUI extends JFrame implements ActionListener {
             System.out.println("An error occurred.");
             e.printStackTrace();
         }
-
+//uznem laiku kops sakshanas
         startTime = System.currentTimeMillis();
         tries = 0;
-        System.out.println("Wordle: Type A Five Letter Word");
+        //Tiek izvelets random vards no iespejamajam atbildem, kaa ari uztaisit burtu masiivs
         answerChoosen = ReturnRandomWord();
         answer = new char[5];
         for (int i = 0; i < 5; i++ ) answer[i] = answerChoosen.charAt(i);
 
         input = new char[5];
     }
-    
+//beidzas start lingo
+
+
     public static void EndWordle() {
-        System.out.println("Wordle: The Answer Was: " + new String(answerChoosen));
-        System.out.println("Wordle: You Found The Answer in " + ((System.currentTimeMillis() - startTime) / 1000) + " seconds and " + tries + " tries.");
+        System.out.println("Vārds bija: " + new String(answerChoosen));
+        System.out.println("Atbilde atrasta: " + ((System.currentTimeMillis() - startTime) / 1000) + " sekundēs un " + tries + " mēģinājumos.");
 
         userText1.setEnabled(false);
         userText1.setVisible(false);
 
-        if (!done) stats.setText("<html><font size='1' color=red> " + "The Answer Was: " + new String(answerChoosen) + ". You wasted \n " + ((System.currentTimeMillis() - startTime) / 1000) + " seconds (:" + "</font> <font");
-        else  stats.setText("<html><font size='1' color=green> " + "You Found The Answer in \n " + ((System.currentTimeMillis() - startTime) / 1000) + " seconds and " + tries + " tries." + "</font> <font");
+        if (!done) stats.setText("<html><font size='2' color=red> " + "Atbilde bija: " + new String(answerChoosen) + ". Tu izniekoji \n " + ((System.currentTimeMillis() - startTime) / 1000) + " sekundes ):" + "</font> <font");
+        else  stats.setText("<html><font size='2' color=green> " + "Atbilde atrasta \n " + ((System.currentTimeMillis() - startTime) / 1000) + " sekundēs un " + tries + " piegājienos." + "</font> <font");
     }
 
     @Override
@@ -137,12 +139,17 @@ public class GUI extends JFrame implements ActionListener {
         else System.out.println("Wordle: That is not a valid word");
     }
 
+
+
+
+
     public static void ButtonPressed(){
+        //parvietot input lauku zemak ar katru meginjajumu
         userText1.setBounds(40, 80 + ((tries + 1) * 25), 80, 25);
 
         String userInput = userText1.getText();
         int[] colorOfLetters = PlayWordle(userInput);
-
+//salidzina, ja visas burtu krasas ir zalas, tad beigt speli
         done = true;
         for (int i : colorOfLetters) {
             if (i != 2) done = false;
@@ -168,6 +175,14 @@ public class GUI extends JFrame implements ActionListener {
         userText1.setText(""); //set the text box to "" after all the logic is done
     }
 
+
+
+
+
+
+
+
+    
     public static int[] PlayWordle(String InputWordleWord) {
         done = false;
         tries++;
@@ -238,8 +253,8 @@ public class GUI extends JFrame implements ActionListener {
     public static String ReturnRandomWord(){
 
         String[] answerList = new String[2315];
-        try { //copied from https://replit.com/@skutschke/WordleWords#Main.java
-            File myObj = new File("C:\\Users\\Janis\\Desktop\\Minecraft JAVA\\Javaprojekts12m\\src\\wordleAnswers.txt");
+        try { 
+            File myObj = new File("src\\wordleAnswers.txt");
             Scanner myReader = new Scanner(myObj);
             int indexCounter = 0;
             while (myReader.hasNextLine()) {
