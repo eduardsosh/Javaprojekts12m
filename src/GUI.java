@@ -1,7 +1,7 @@
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.GridLayout;
+//import java.awt.BorderLayout;
+//import java.awt.Color;
+//import java.awt.Font;
+//import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -9,13 +9,13 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
-import java.util.Scanner;
-import javax.xml.transform.Templates;
-import java.io.FileNotFoundException;
+//import javax.swing.border.EmptyBorder;
+//import java.util.Scanner;
+//import javax.xml.transform.Templates;
+
 import java.io.*;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
+//import java.nio.charset.Charset;
+//import java.nio.file.Files;
 import java.util.*;
 
 public class GUI extends JFrame implements ActionListener {
@@ -41,7 +41,13 @@ public class GUI extends JFrame implements ActionListener {
     static boolean done;
     static String answerChoosen;
 
-	public static void main(String[] args) {
+
+
+
+
+
+    //-------------------------------------------------------------------
+	public static void main(String[] args) throws IOException {
 // saziimet laukumu no sakuma
 //izveidot frame
         panel = new JPanel();
@@ -84,9 +90,12 @@ public class GUI extends JFrame implements ActionListener {
         frame.setVisible(true);
 
         StartWordle(); //sakt speeli
+        
     }
 
-    public static void StartWordle() {
+    //--------------------------------------------------------------------------------------------------------------------
+
+    public static void StartWordle() throws IOException {/*
         //izveido masivu ar iespejamajiem vardiem, kurus var ierakstit
         possibleWords = new String[12947];
         try { 
@@ -103,7 +112,10 @@ public class GUI extends JFrame implements ActionListener {
         } catch (FileNotFoundException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
-        }
+        }*/
+        GetFile importer = new GetFile();
+        possibleWords = importer.importFile("src\\wordleWords.txt");
+
 //uznem laiku kops sakshanas
         startTime = System.currentTimeMillis();
         tries = 0;
@@ -115,6 +127,12 @@ public class GUI extends JFrame implements ActionListener {
         input = new char[5];
     }
 //beidzas start lingo
+//-------------------------------------------------------------------------
+
+    
+
+
+
 
 
     public static void EndWordle() {
@@ -130,7 +148,7 @@ public class GUI extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // TODO Auto-generated method stub // if the button is pressed
+        //Auto-generated method stub // if the button is pressed
         EnterWord();
     }
 
@@ -250,8 +268,8 @@ public class GUI extends JFrame implements ActionListener {
         return false;
     }
 
-    public static String ReturnRandomWord(){
-
+    public static String ReturnRandomWord() throws IOException{
+        /*
         String[] answerList = new String[2315];
         try { 
             File myObj = new File("src\\wordleAnswers.txt");
@@ -268,6 +286,10 @@ public class GUI extends JFrame implements ActionListener {
             System.out.println("An error occurred.");
             e.printStackTrace();
         }
+        */
+        String[] answerList = new String[2315];
+        GetFile importer = new GetFile();
+        answerList = importer.importFile("src\\wordleAnswers.txt");
 
         return answerList[(int)(Math.random() * (answerList.length - 1))]; //returns a random word from this large list
     }
