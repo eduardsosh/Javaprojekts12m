@@ -83,7 +83,11 @@ public class GUI extends JFrame implements ActionListener {
         
 // uzziimee tukshas vietas
         labels = new JLabel[6];
-        
+        for (int i = 0; i < 6; i++) {
+            labels[i] = new JLabel("<html><font size='5' color=blue> ----- </font> <font");
+            labels[i].setBounds(44, 80 + (i * 25), 80, 25);
+            panel.add(labels[i]);
+        }
 
         
         
@@ -95,18 +99,16 @@ public class GUI extends JFrame implements ActionListener {
 
     public static void StartWordle() throws IOException {
         
-        for (int i = 0; i < 6; i++) {
-            labels[i] = new JLabel("<html><font size='5' color=blue> ----- </font> <font");
-            labels[i].setBounds(44, 80 + (i * 25), 80, 25);
-            panel.add(labels[i]);
-        }
-        //userText1.setBounds(40, 80 + (0 * 25), 80, 25);
+        
+        userText1.setBounds(40, 80 + (0 * 25), 80, 25);
         tries = 0;
         frame.setVisible(true);
         
+        for (int i = 0; i < 6; i++) {
+            labels[i].setText("<html><font size='5' color=blue> ----- </font> <font");
+        }
         
-        
-        
+        stats.setText("Ievadi 5 burtu vardu!");
         
         Playing.is = true;
         userText1.setEnabled(true);
