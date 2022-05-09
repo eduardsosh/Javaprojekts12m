@@ -79,6 +79,8 @@ public class GUI extends JFrame implements ActionListener {
         panel.add(button);
 
         
+
+        
 // uzziimee tukshas vietas
         labels = new JLabel[6];
         for (int i = 0; i < 6; i++) {
@@ -88,14 +90,15 @@ public class GUI extends JFrame implements ActionListener {
         }
 
         frame.setVisible(true);
-
+        
         StartWordle(); //sakt speeli
         
     }
 
     //--------------------------------------------------------------------------------------------------------------------
 
-    public static void StartWordle() throws IOException {/*
+    public static void StartWordle() throws IOException {
+        Playing.is = true;/*
         //izveido masivu ar iespejamajiem vardiem, kurus var ierakstit
         possibleWords = new String[12947];
         try { 
@@ -136,6 +139,7 @@ public class GUI extends JFrame implements ActionListener {
 
 
     public static void EndWordle() {
+        Playing.is = false;
         System.out.println("Vārds bija: " + new String(answerChoosen));
         System.out.println("Atbilde atrasta: " + ((System.currentTimeMillis() - startTime) / 1000) + " sekundēs un " + tries + " mēģinājumos.");
 
@@ -148,8 +152,22 @@ public class GUI extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        System.out.println(Playing.is);
         //Auto-generated method stub // if the button is pressed
-        EnterWord();
+        if (!Playing.is) {
+
+            try {
+                StartWordle();
+            } catch (IOException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+        }else{
+            EnterWord();
+        }
+        
+        
+        
     }
 
     public static void EnterWord(){ //if its good, actually submit the word for checking
