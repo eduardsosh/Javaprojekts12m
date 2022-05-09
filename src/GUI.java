@@ -83,13 +83,9 @@ public class GUI extends JFrame implements ActionListener {
         
 // uzziimee tukshas vietas
         labels = new JLabel[6];
-        for (int i = 0; i < 6; i++) {
-            labels[i] = new JLabel("<html><font size='5' color=blue> ----- </font> <font");
-            labels[i].setBounds(44, 80 + (i * 25), 80, 25);
-            panel.add(labels[i]);
-        }
+        
 
-        frame.setVisible(true);
+        
         
         StartWordle(); //sakt speeli
         
@@ -98,7 +94,25 @@ public class GUI extends JFrame implements ActionListener {
     //--------------------------------------------------------------------------------------------------------------------
 
     public static void StartWordle() throws IOException {
-        Playing.is = true;/*
+        
+        for (int i = 0; i < 6; i++) {
+            labels[i] = new JLabel("<html><font size='5' color=blue> ----- </font> <font");
+            labels[i].setBounds(44, 80 + (i * 25), 80, 25);
+            panel.add(labels[i]);
+        }
+        //userText1.setBounds(40, 80 + (0 * 25), 80, 25);
+        tries = 0;
+        frame.setVisible(true);
+        
+        
+        
+        
+        
+        Playing.is = true;
+        userText1.setEnabled(true);
+        userText1.setVisible(true);
+        /*
+        
         //izveido masivu ar iespejamajiem vardiem, kurus var ierakstit
         possibleWords = new String[12947];
         try { 
@@ -121,12 +135,12 @@ public class GUI extends JFrame implements ActionListener {
 
 //uznem laiku kops sakshanas
         startTime = System.currentTimeMillis();
-        tries = 0;
+        
         //Tiek izvelets random vards no iespejamajam atbildem, kaa ari uztaisit burtu masiivs
         answerChoosen = ReturnRandomWord();
         answer = new char[5];
         for (int i = 0; i < 5; i++ ) answer[i] = answerChoosen.charAt(i);
-
+        //System.out.println(answer);
         input = new char[5];
     }
 //beidzas start lingo
@@ -199,7 +213,7 @@ public class GUI extends JFrame implements ActionListener {
             else if (colorOfLetters[i] == 2) numsToColors[i] = "green";
         }
 
-        System.out.println("Set colors to " + numsToColors[0] + " " + numsToColors[1] + " " + numsToColors[2] + " " + numsToColors[3] + " " + numsToColors[4] + " User Input was" + userInput + " answer was " + answerChoosen + " work on word is " + new String(answer));
+        System.out.println("Set colors to " + numsToColors[0] + " " + numsToColors[1] + " " + numsToColors[2] + " " + numsToColors[3] + " " + numsToColors[4] + " User Input was " + userInput + " answer was " + answerChoosen + " work on word is " + new String(answer));
         String finalString = (
         "<html><font size='5' color=" + numsToColors[0] + "> " + userInput.charAt(0) + "</font> <font            " + 
         "<html><font size='5' color=" + numsToColors[1] + "> " + userInput.charAt(1) + "</font> <font            " + 
@@ -234,7 +248,10 @@ public class GUI extends JFrame implements ActionListener {
             }
         }
 //just reset answer every time
-        for (int i = 0; i < 5; i++ ) answer[i] = answerChoosen.charAt(i);
+        for (int i = 0; i < 5; i++ ){
+             answer[i] = answerChoosen.charAt(i);
+             //System.out.println(answer);
+            };
         return ReturnColorOfLeters(input, answer);
     }
 
