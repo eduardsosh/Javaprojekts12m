@@ -7,12 +7,14 @@ import java.util.Scanner;
 
 public class GetFile {
     public String [] importFile(String path) throws IOException {
+        
+        // caur path parbauda cik rindas ir failam
         BufferedReader reader = new BufferedReader(new FileReader(path));
         int lines = 0;
         while (reader.readLine() != null) lines++;
         reader.close();
 
-
+        // izveido masivu ar noskaidroto rindu skaitu.
         String[] words = new String[lines];
         //words = new String[];
         try { 

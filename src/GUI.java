@@ -25,6 +25,7 @@ public class GUI extends JFrame implements ActionListener {
 
     private static JLabel Title;
     private static JLabel stats;
+    private static JLabel Spentch;
     private static JTextField userText1;
     private static JLabel[] labels;
 
@@ -40,6 +41,8 @@ public class GUI extends JFrame implements ActionListener {
     static char[] answer;
     static boolean done;
     static String answerChoosen;
+    static String spent;
+    static char[] letters = new char[20];
 
 
 
@@ -59,7 +62,7 @@ public class GUI extends JFrame implements ActionListener {
         frame.add(panel);
 //vaards
         panel.setLayout(null);
-        Title = new JLabel("Ieraksti vārdu: ");
+        Title = new JLabel("Uzmini vārdu! ");
         Title.setBounds(10, 20, 150, 25);
         panel.add(Title);
 //ieraksti vardu
@@ -77,6 +80,10 @@ public class GUI extends JFrame implements ActionListener {
         button.setBounds(200, 20, 80, 25);
         button.addActionListener(new GUI());
         panel.add(button);
+
+        Spentch = new JLabel("");
+        Spentch.setBounds(200,70,50,100);
+        panel.add(Spentch);
 
         
 
@@ -108,11 +115,19 @@ public class GUI extends JFrame implements ActionListener {
             labels[i].setText("<html><font size='5' color=blue> ----- </font> <font");
         }
         
-        stats.setText("Ievadi 5 burtu vardu!");
+        stats.setText("Ievadi 5 burtu vārdu angliski!");
         
         Playing.is = true;
         userText1.setEnabled(true);
         userText1.setVisible(true);
+
+        for (int i = 0; i < letters.length; i++) {
+            letters[i] = 0;
+        }
+        Spentch.setText("");
+
+        
+
         /*
         
         //izveido masivu ar iespejamajiem vardiem, kurus var ierakstit
@@ -186,7 +201,7 @@ public class GUI extends JFrame implements ActionListener {
         
     }
 
-    public static void EnterWord(){ //if its good, actually submit the word for checking
+    public static void EnterWord(){ 
         if ( IsAValidWord(userText1.getText(), possibleWords) ) ButtonPressed();
         else System.out.println("Wordle: That is not a valid word");
     }
@@ -210,7 +225,10 @@ public class GUI extends JFrame implements ActionListener {
 
         String[] numsToColors = new String[5];
         for (int i = 0; i < 5; i++) {
-            if (colorOfLetters[i] == 0) numsToColors[i] = "black";
+            if (colorOfLetters[i] == 0){
+                 numsToColors[i] = "black";
+                //SpentLetters(userInput.charAt(i));
+            }
             else if (colorOfLetters[i] == 1) numsToColors[i] = "orange";
             else if (colorOfLetters[i] == 2) numsToColors[i] = "green";
         }
@@ -224,7 +242,10 @@ public class GUI extends JFrame implements ActionListener {
         "<html><font size='5' color=" + numsToColors[4] + "> " + userInput.charAt(4) + "</font> <font            ");
         setNextLabel(finalString);
 
-        userText1.setText(""); //set the text box to "" after all the logic is done
+        userText1.setText("");
+        
+        //char[] spent = SpentLetters();
+        
     }
 
 
@@ -239,17 +260,17 @@ public class GUI extends JFrame implements ActionListener {
         done = false;
         tries++;
 
-        String R1 = InputWordleWord.toLowerCase();//String R1 = s.nextLine().toLowerCase();
+        String R1 = InputWordleWord.toLowerCase();
 
-        //check if it is 5 letters and is a possible word
+        //parbaudishanas metode varda labumam
         if (!IsAValidWord(R1, possibleWords)) {
             System.out.println("wasnt a good word");
         } else {
-            for (int i = 0; i < 5; i++ ) { //puts the inputWord into a char[]
+            for (int i = 0; i < 5; i++ ) { //ievades vards uz char masivu
                 input[i] = R1.charAt(i);
             }
         }
-//just reset answer every time
+//
         for (int i = 0; i < 5; i++ ){
              answer[i] = answerChoosen.charAt(i);
              //System.out.println(answer);
@@ -263,7 +284,7 @@ public class GUI extends JFrame implements ActionListener {
 
     public static int[] ReturnColorOfLeters(char[] inputWord, char[] correctWord) {
         char[] answerTemp = correctWord;
-        int[] colorForLetter = new int[5]; //0 is grey, yellow is 1, green is 2
+        int[] colorForLetter = new int[5]; //0 peleks 1 dzeltens 2 zals
 
         for (int i = 0; i < 5; i++) { //check for any correct position+letter (green)
             if (inputWord[i] == answerTemp[i]) {
@@ -272,10 +293,10 @@ public class GUI extends JFrame implements ActionListener {
             }
         }
 
-        for (int j = 0; j < 5; j++) { //check for any correct letter (yellow)
+        for (int j = 0; j < 5; j++) { 
             for (int k = 0; k < 5; k++){
                 if (inputWord[j] == answerTemp[k] && colorForLetter[j] != 2) {
-                    //if that letter is not already green and matches some other letter
+                    // parbauda vai nav vel zalie
                     colorForLetter[j] = 1;
                     answerTemp[k] = '-';
                 }
@@ -283,7 +304,7 @@ public class GUI extends JFrame implements ActionListener {
         }
 
         for (int m = 0; m < 5; m++) {
-            if (colorForLetter[m] == 0) System.out.print(inputWord[m]);
+            if (colorForLetter[m] == 0) SpentLetters(inputWord[m]);
             if (colorForLetter[m] == 1) System.out.print(ANSI_YELLOW + inputWord[m] + ANSI_RESET);
             if (colorForLetter[m] == 2) System.out.print(ANSI_GREEN + inputWord[m] + ANSI_RESET);
         }
@@ -328,6 +349,29 @@ public class GUI extends JFrame implements ActionListener {
         GetFile importer = new GetFile();
         answerList = importer.importFile("src\\wordleAnswers.txt");
 
-        return answerList[(int)(Math.random() * (answerList.length - 1))]; //returns a random word from this large list
+        return answerList[(int)(Math.random() * (answerList.length - 1))]; //atgreiez randomu
     }
+
+    public static void SpentLetters(char letter) {
+        
+            
+        for (int i = 0; i < letters.length; i++) {
+            if (letters[i] == letter) {
+                break;
+            }
+            if (letters[i] == 0) {
+                letters[i] = letter;
+                letters[i+1] = ' ';
+                break;
+            }
+        }
+        
+        String b = new String(letters);  
+
+        System.out.println(letters);
+        System.out.println(Arrays.toString(letters));
+        Spentch.setText("<html><font size='5' <p>"+ b+ "</font></p></html>");
+        }
+
+        
 }
